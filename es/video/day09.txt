@@ -1,0 +1,135 @@
+/bank/account进行检索
+
+检索类型：全文检索(match),完全匹配（match_phrase）,范围匹配 range
+聚合类型：
+排序:
+过滤:
+
+
+1. 地址中包含‘Avenue’ && age in(20,30)
+2. 按年龄分组，求数量
+3. 年龄39岁的顾客中，男女性别数量
+4. 按州分组，并按照余额降序排序
+5. 按照年龄段[(0-20),(20-40),(40-100)]进行数据统计，每个州的男女客户数量
+
+
+
+GET /bank/account/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "address": "Avenue"
+          }
+        }
+      ],
+      "filter": {
+        "range": {
+          "age": {
+            "gte": 20,
+            "lte": 30
+          }
+        }
+      }
+    }
+  }
+}
+
+GET bank/account/_search
+{
+  "aggs": {
+    "gender_type": {
+      "terms": {
+        "field": "gender.keyword",
+        "size": 10
+      }
+    }
+  },
+  "size": 0
+}
+
+GET bank/account/_search
+{
+  "query": {
+    "match": {
+      "age": "39"
+    }
+  },
+  "aggs": {
+    "group_result": {
+      "terms": {
+        "field": "gender.keyword"
+      }
+    }
+  }
+}
+
+GET bank/account/_search
+{
+  "query": {
+    "match": {
+      "age": "39"
+    }
+  },
+  "aggs": {
+    "group_result": {
+      "terms": {
+        "field": "gender.keyword",
+        "order": {
+          "avg_balance": "desc"
+        }
+      },
+      "aggs": {
+        "avg_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+GET bank/account/_search
+{
+  "size": 0,
+  "aggs": {
+    "age-groups": {
+      "range": {
+        "field": "age",
+        "ranges": [
+          {
+            "from": 0,
+            "to": 30
+          },
+          {
+            "from": 31,
+            "to": 50
+          },
+          {
+            "from": 51,
+            "to": 100
+          }
+        ]
+      },
+      "aggs": {
+        "city_groups": {
+          "terms": {
+            "field": "city.keyword"
+          },
+          "aggs": {
+            "gender_groups": {
+              "terms": {
+                "field": "gender.keyword",
+                "size": 10
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

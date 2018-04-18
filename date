@@ -1,0 +1,16 @@
+date -d now +%s //时间戳
+date -d today +'%Y-%m-%d %H:%M:%S' //当前时间完整表达形式
+date -d yesterday
+date -d -1day +1day -1month +2month
+
+#判断文件是否存在
+YACCESS=`date -d yesterday +%Y%m%d`
+FILE="access_$YACCESS.log.tgz"
+cd /data/nginx/logs
+if [ -f "$FILE" ];then
+echo "OK"
+else
+echo "error $FILE" > error.log
+mail -s "$FILE backup fail" xueleixi@qq.com <error.log
+fi
+

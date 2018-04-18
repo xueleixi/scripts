@@ -1,0 +1,5 @@
+#!/usr/local/bin/expect
+spawn ssh -i ~/xueleixin.pem xueleixin@101.201.197.222
+expect "pass" 
+send "GCoODaP1y7huvy5h\r"
+expect eof

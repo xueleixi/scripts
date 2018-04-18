@@ -1,0 +1,11 @@
+ElasticSearch技术解析与实战.pdf
+
+
+GET bank/_search
+{
+  "query": {
+      "term": {"age": "39" }}
+  }
+}}
+
+

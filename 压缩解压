@@ -1,0 +1,14 @@
+1-zip
+zip -r data.zip dir_to_recursive
+unzip data.zip
+
+2-tar.gz
+tar -cvgf data.tar.gz dir
+tar -xvgf data.tar.gz -C dir_to
+
+3-.tar.bz2
+tar -cvjf data.tar.bz2 dir
+tar -xvjf data.tar.bz2 -C dir_to
+
+
+

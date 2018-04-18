@@ -1,0 +1,5 @@
+#!/usr/bin/expect
+spawn ssh zhangshan@hkserver uptime
+expect "pass"
+send "214217love\n"
+expect eof

@@ -1,0 +1,20 @@
+yum -y install libxml2
+yum -y install libxml2-devel
+
+yum -y install openssl
+yum -y install openssl-devel
+yum -y install curl
+yum -y install curl-devel
+yum -y install libjpeg
+yum -y install libjpeg-devel
+yum -y install libpng
+yum -y install libpng-devel
+yum -y install freetype
+yum -y install freetype-devel
+yum -y install pcre
+yum -y install pcre-devel
+yum -y install libxslt
+yum -y install libxslt-devel
+yum -y install bzip2
+yum -y install bzip2-devel
+

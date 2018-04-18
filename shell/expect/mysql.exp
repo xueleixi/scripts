@@ -1,0 +1,9 @@
+#!/usr/bin/expect
+
+spawn mysql -uroot -hlocalhost -p
+expect "*password"
+send "123456\n"
+expect "Welcome*"
+send "select version();\n"
+
+send eof

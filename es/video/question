@@ -1,0 +1,2 @@
+- bulk api是顺序执行的吗？
+- from 分页中offset是如何保证顺序的（默认|order)

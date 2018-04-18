@@ -1,0 +1,36 @@
+# php install guide
+
+## configure
+- 配置安装路径 ./configure --prefix=/usr/local/php --with-config-file-path=/usr/local/php
+- 指定配置文件路径 --with-config-file-path=/usr/local/php
+- 编译fpm --enable-fpm
+- with extenisons
+./configure --prefix=/usr/local/php --with-curl --with-freetype-dir --with-gd --with-gettext --with-iconv-dir --with-kerberos --with-libdir=lib64 --with-libxml-dir --with-mysqli --with-openssl --with-pcre-regex --with-pdo-mysql --with-pdo-sqlite --with-pear --with-png-dir --with-jpeg-dir --with-xmlrpc --with-xsl --with-zlib --with-bz2 --with-mhash --enable-fpm --enable-bcmath --enable-libxml --enable-inline-optimization --enable-gd-native-ttf --enable-mbregex --enable-mbstring --enable-opcache --enable-pcntl --enable-shmop --enable-soap --enable-sockets --enable-sysvsem --enable-sysvshm --enable-xml --enable-zip
+
+./configure --prefix=$HOME/local/php --with-config-file-path=/usr/local/php=$HOME/local/php  --with-pdo-mysql --enable-pcntl --enable-mbregex --enable-mbstring
+
+
+## make && make install
+
+## copy config files
+- cp php.ini-development /usr/local/php/lib/php.ini
+- cp /usr/local/php/etc/php-fpm.conf.default /usr/local/php/etc/php-fpm.conf
+- cp sapi/fpm/php-fpm /usr/local/bin
+
+
+## 安装扩展
+- redis
+    - 下载、解压
+    - phpize
+    - ./configure --with-php-config=/usr/local/php/bin/php-config
+    - make && make install
+
+- kafka:
+$ git clone https://github.com/arnaud-lb/php-rdkafka.git
+$ cd php-rdkafka
+$ phpize
+$ ./configure
+$ make all -j 5
+$ sudo make install
+
+export PATH=/Users/xueleixi/local/php/bin:$PATH
