@@ -1,18 +1,18 @@
 # hadoop安装
+[hadoop官方文档](http://hadoop.apache.org/docs/r2.6.5/hadoop-project-dist/hadoop-common/SingleCluster.html)
 
 1. 下载 hadoop-2.6.5.tar.gz
 2. 解压到 /usr/local/hadoop/2.6.5/
-3. hadoop环境变量 export HADOOP_HOME=/usr/local/hadoop/2.6.5 export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+3. hadoop环境变量 
+export HADOOP_HOME=/usr/local/hadoop/2.6.5 
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin 
+export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 
-  # 配置conf
+# HADOOP_CLASSPATH
 
-  export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export HADOOP_CLASSPATH=a.jar
 
-  # HADOOP_CLASSPATH
-
-  export HADOOP_CLASSPATH=a.jar
-
-4. psedu运行
+1. psedu运行
 
   > 初始化：hdfs namenode -format
 
@@ -37,7 +37,7 @@
 
   12. reource manager 8088
 
-5. 命令行工具
+2. 命令行工具
 
   1. hadoop fs -help
   2. 上传文件
@@ -59,7 +59,7 @@
     -rw-r--r--   1  xueleixi supergroup       1366 2017-10-26 16:22 test1.txt
     ```
 
-6. java编程 export HADOOP_CLASSPATH=a.jar hadoop 包名.类名 参数
+3. java编程 export HADOOP_CLASSPATH=a.jar hadoop 包名.类名 参数
 
 ```
 public static void main(String[] args) throws Exception {  

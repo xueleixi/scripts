@@ -29,6 +29,7 @@ agent options:
 ```
 
 ## 单节点配置
+### 收集到logger中
 
 ```
   # example.conf: A single-node Flume configuration
@@ -56,13 +57,13 @@ agent options:
   a1.sinks.k1.channel = c1
 ```
 
-- 运行 bin/flume-ng agent --conf conf --conf-file example.conf --name a1 -Dflume.root.logger=INFO,console
-
+- flume-ng agent --conf conf --conf-file conf/example.conf --name a1 -Dflume.root.logger=DEBUG,console
+    - telnet localhost 44444
 - Note that in a full deployment we would typically include one more option: --conf=
 
   <conf-dir>. The <conf-dir> directory would include a shell script flume-env.sh and potentially a log4j properties file. </conf-dir></conf-dir>
 
-- 数据写入hdfs
+### 数据收集到hdfs中
 
   - mkdir /usr/local/flume/data
   - mkdir /usr/local/flume/checkpoint
@@ -99,4 +100,4 @@ a1.sources.r1.channels = c1
 a1.sinks.k1.channel = c1
 ```
 
-- flume-ng agent -n a1 -c ../conf -f ../conf/example-hdfs.conf -Dflume.root.logger=DEBUG,console
+- flume-ng agent -n a1 -c conf -f conf/example-hdfs.conf -Dflume.root.logger=DEBUG,console
