@@ -1,11 +1,22 @@
-ElasticSearch技术解析与实战.pdf
+- 启动
+    - ~/software/elastic/elasticsearch-6.1.3/bin/elasticsearch
+    - ~/software/kibana/6.1.3/bin/kibana
 
 
-GET bank/_search
-{
-  "query": {
-      "term": {"age": "39" }}
-  }
-}}
+- ElasticSearch技术解析与实战.pdf
+
+    - GET _cat/indices [查看index]
+
+    - GET /_search     [数据检索]
+        {
+          "query": {
+            "match_all": {}
+          }
+        }
+        {
+          "query": {
+              "term": {"age": "39" }}
+          }
+        }}
 
 

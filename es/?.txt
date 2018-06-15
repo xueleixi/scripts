@@ -1,0 +1,4 @@
+- _all字段
+- mapping.copy_to属性
+- index别名
+

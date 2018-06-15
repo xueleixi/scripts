@@ -1,0 +1,106 @@
+1. 更新/添加
+PUT twitter/tweet/1
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elasticsearch"
+}
+
+2. 自动mapping
+GET /twitter/tweet/_mapping
+{
+  "twitter": {
+    "mappings": {
+      "tweet": {
+        "properties": {
+          "message": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          },
+          "post_date": {
+            "type": "date"
+          },
+          "user": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+3. 利用version实现乐观锁
+PUT twitter/tweet/1?version=2
+{
+    "message" : "elasticsearch now has versioning support, double cool!"
+}
+
+{
+  "error": {
+    "root_cause": [
+      {
+        "type": "version_conflict_engine_exception",
+        "reason": "[tweet][1]: version conflict, current version [2] is different than the one provided [1]",
+        "index_uuid": "Vv2KA36jTDOS_900SsabEw",
+        "shard": "3",
+        "index": "twitter"
+      }
+    ],
+    "type": "version_conflict_engine_exception",
+    "reason": "[tweet][1]: version conflict, current version [2] is different than the one provided [1]",
+    "index_uuid": "Vv2KA36jTDOS_900SsabEw",
+    "shard": "3",
+    "index": "twitter"
+  },
+  "status": 409
+}
+
+4. operation type [强制创建/更新]
+PUT twitter/tweet/1?op_type=create
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elasticsearch"
+}
+
+5. id自动生成
+
+POST twitter/tweet/
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elasticsearch"
+}
+
+6. routing
+默认是根据id进行hash
+mapping设置中可以指定一个_routing字段
+
+POST twitter/tweet?routing=kimchy
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elasticsearch"
+}
+
+When setting up explicit mapping, the _routing field can be optionally used to direct the index operation to extract the routing value from the document itself. This does come at the (very minimal) cost of an additional document parsing pass. If the _routing mapping is defined and set to be required, the index operation will fail if no routing value is provided or extracted.
+
+7. timeout
+默认操作1分钟
+PUT twitter/tweet/1?timeout=5m
+{
+    "user" : "kimchy",
+    "post_date" : "2009-11-15T14:12:12",
+    "message" : "trying out Elasticsearch"
+}

@@ -1,0 +1,37 @@
+1. 根据index,type,id,version获取数据
+version:限制版本号，如果对应版本号数据不存在返回错误
+
+GET twitter/tweet/1?version=1
+
+2. realtime
+get 操作是实时的
+
+3. source filter
+GET twitter/tweet/0?_source_include=*.id&_source_exclude=entities
+
+GET twitter/tweet/1?_source=false
+
+4. stored fields
+PUT twitter
+{
+   "mappings": {
+      "tweet": {
+         "properties": {
+            "counter": {
+               "type": "integer",
+               "store": false
+            },
+            "tags": {
+               "type": "keyword",
+               "store": true
+            }
+         }
+      }
+   }
+}
+
+5.只获取_source
+GET twitter/tweet/1/_source
+GET twitter/tweet/1/_source?_source_include=*.id&_source_exclude=entities'
+
+

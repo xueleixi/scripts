@@ -1,0 +1,332 @@
+GET /user/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET _cat/indices
+
+GET /shakespeare/_mapping
+
+GET /user/_search
+{
+  "query": {
+    "match": {
+      "last_name": "xi"
+    }
+  }
+}
+
+GET reports/_search
+{
+  "query": {
+    "match_all": {
+
+    }
+  },
+  "sort": [
+    {
+      "_id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+GET reports/_search
+{
+  "query": {
+    "match": {
+      "date": 1527696000
+    }
+  },
+  "sort": [
+    {
+      "_id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+GET reports/_search
+{
+  "query": {
+    "match_phrase": {
+       "phrase": "这是评论区"
+    }
+  }
+}
+GET reports/_search
+{
+  "query": {
+    "match_phrase": {
+       "query": {
+         "query":"今是",
+         "slop":1
+       }
+    }
+  }
+}
+
+GET reports/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "今天是",
+      "fields": ["comment"]
+    }
+  }
+}
+
+GET reports/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+         "range": {
+           "date": {
+             "gte": 10,
+             "lte": 1527696000
+           }
+         },
+         "match": {
+           "comment": "评论"
+         }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "_id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
+
+GET reports/_search
+GET reports/_mapping
+POST /_analyze
+{
+    "analyzer":"ik_smart",
+    "text":"今天是"
+}
+
+GET reports/_search
+{
+  "size": 1,
+  "query": {
+    "match_phrase": {
+      "query": "今天是"
+    }
+  },
+  "aggs": {
+    "total_imp": {
+      "sum": {
+        "field": "imp"
+      }
+    }
+  }
+}
+
+
+GET reports/_search
+{
+  "size": 1,
+  "query": {
+    "match_phrase": {
+      "query": "今天是"
+    }
+  },
+  "aggs": {
+    "date_report": {
+      "terms": {
+        "field": "date",
+        "size": 10
+      },
+      "aggs": {
+        "imp_t": {
+          "sum": {
+            "field": "imp"
+          }
+        }
+      }
+    }
+  }
+}
+
+GET reports/word/_search
+{
+  "size": 1,
+  "query": {
+    "match_phrase": {
+      "query": "今天是"
+    }
+  },
+  "aggs": {
+    "word_reposts":{
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "2019-06-30"
+          }
+        }
+      },
+      "aggs": {
+        "total_imp": {
+          "sum": {
+            "field": "imp"
+          }
+        }
+      }
+    }
+  }
+}
+
+GET reports/_search
+{
+  "size": 0,
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "2018-05-31",
+            "lte": "2018-05-31"
+          }
+        }
+      }
+    }
+  },
+  "aggs": {
+    "date_cnt": {
+      "terms": {
+        "field": "date"
+      },
+      "aggs": {
+        "avg_imp": {
+          "avg": {
+            "field": "imp"
+          }
+        }
+      }
+    }
+  }
+}
+
+GET reports/_search
+{
+  "size": 1,
+  "_source": "",
+  "query": {
+    "bool": {
+      "filter": {
+        "range": {
+          "date": {
+            "gte": "now-7M"
+          }
+        }
+      },
+      "should": [
+        {
+          "match": {
+            "query": "0今天"
+          }
+        }
+      ]
+    }
+  },
+  "aggs": {
+    "date_cnt": {
+      "terms": {
+        "field": "phrase.keyword"
+      },
+      "aggs": {
+        "avg_imp": {
+          "avg": {
+            "field": "imp"
+          }
+        },
+        "avg_clk":{
+          "avg":{
+            "field": "clk"
+          }
+        }
+      }
+    }
+  }
+}
+
+过滤:地域、媒体、时间
+    时间：range:{'gte':'now-7d'}
+    地域：
+
+{
+  "size": 1,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "date": {
+              "gte": "now-7M"
+            }
+          }
+        },
+        {
+          "term": {
+            "media": {
+              "value": "sina"
+            }
+          }
+        },
+        {
+          "term": {
+            "geo": {
+              "value": "北京"
+            }
+          }
+        }
+      ],
+      "should": [
+        {
+          "term": {
+            "query": "奔驰"
+          }
+        },
+        {
+          "term": {
+            "query": "宝马"
+          }
+        }
+      ],
+      "minimum_should_match": 1
+    }
+  },
+  "aggs": {
+    "data": {
+      "terms": {
+        "field": "query",
+        "size": 10
+      },
+      "aggs": {
+        "avg_imp": {
+          "avg": {
+            "field": "imp"
+          }
+        },
+        "avg_clk": {
+          "avg": {
+            "field": "clk"
+          }
+        }
+      }
+    }
+  }
+}
+
+

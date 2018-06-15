@@ -1,0 +1,22 @@
+#!/usr/local/bin/expect
+
+#spawn mysql -uroot -e 'select * from deepleaper.user'-p
+#expect "password"
+#send "123456\n"
+#expect eof
+
+
+#spawn mysql -uroot -p
+#expect "password" {send "123456\n"}
+#expect eof
+
+
+spawn mysql -uroot -p
+expect {
+    "yes/no" { send "yes\n"; exp_continue ; }
+    "password" { send "123456\n"; }
+}
+interact
+
+
+# shell脚本中的执行方式 expect -c "expect脚本命令"

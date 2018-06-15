@@ -4,6 +4,6 @@ spawn mysql -uroot -hlocalhost -p
 expect "*password"
 send "123456\n"
 expect "Welcome*"
-send "select version();\n"
+send "select version()\g"
 
 send eof
